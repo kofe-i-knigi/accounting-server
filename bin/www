@@ -1,0 +1,14 @@
+#!/usr/bin/node --harmony_destructuring
+
+var http = require('http');
+var debug = require('debug');
+var app = require('../index');
+var models = require("../models");
+
+debug.enable('server');
+
+models.sequelize.sync({force: false}).then(() => {
+  var server = http.createServer(app.callback()).listen(3000, () => {
+    debug('server')('KIK server listening on port ' + server.address().port);
+  });
+});
