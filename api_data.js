@@ -31,7 +31,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "token",
-            "description": "<p>jwt</p>"
+            "description": "<p>jwt, use it in Authorization header</p>"
           }
         ]
       }
