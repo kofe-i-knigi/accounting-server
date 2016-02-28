@@ -3,7 +3,7 @@ define({
   "version": "0.1.0",
   "description": "Документация API учетной системы \"Кофе и Книги\"",
   "title": "API \"Кофе и Книги\"",
-  "url": "http://kofe-i-knigi.github.io/kik-server/",
+  "url": "http://kofe-knigi.ddns.net",
   "template": {
     "forceLanguage": "ru"
   },
@@ -11,7 +11,7 @@ define({
   "apidoc": "0.2.0",
   "generator": {
     "name": "apidoc",
-    "time": "2016-02-28T16:03:52.805Z",
+    "time": "2016-02-28T16:52:12.691Z",
     "url": "http://apidocjs.com",
     "version": "0.15.1"
   }
