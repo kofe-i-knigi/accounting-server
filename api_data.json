@@ -3,6 +3,8 @@
     "type": "post",
     "url": "/admin/auth/login",
     "title": "Authenticate admin",
+    "name": "AdminLogin",
+    "group": "AdminAuth",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -38,9 +40,7 @@
     },
     "version": "0.0.0",
     "filename": "api/admin/auth.js",
-    "group": "_home_stepan_coding_kik_kik_server_api_admin_auth_js",
-    "groupTitle": "_home_stepan_coding_kik_kik_server_api_admin_auth_js",
-    "name": "PostAdminAuthLogin",
+    "groupTitle": "AdminAuth",
     "error": {
       "fields": {
         "Error 4xx": [
