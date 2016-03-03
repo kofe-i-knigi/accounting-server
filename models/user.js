@@ -9,16 +9,19 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       defaultValue: 'barista'
     },
-    name: {
+    login: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    name: {
+      type: DataTypes.STRING
     },
     hash: DataTypes.TEXT,
     salt: DataTypes.STRING
   }, {
     classMethods: {
       associate(models) {
-
+        return models;
       }
     },
 

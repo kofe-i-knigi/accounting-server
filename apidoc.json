@@ -1,0 +1,10 @@
+{
+  "name": "API \"Кофе и Книги\"",
+  "version": "0.1.0",
+  "description": "Документация API учетной системы \"Кофе и Книги\"",
+  "title": "API \"Кофе и Книги\"",
+  "url" : "http://kofe-knigi.ddns.net",
+  "template": {
+    "forceLanguage": "ru"
+  }
+}

@@ -12,6 +12,7 @@ function seedAdmin() {
     if (admin) { return; }
 
     admin = models.User.build({
+      login: 'admin',
       name: 'admin',
       role: 'admin'
     });
@@ -26,10 +27,8 @@ function seedAdmin() {
   });
 }
 
-co(function*() {
-  yield models.sequelize.sync({force: false});
+module.exports = co.wrap(function*() {
+  yield models.sequelize.sync();
 
   yield seedAdmin();
-
-  process.exit();
 });

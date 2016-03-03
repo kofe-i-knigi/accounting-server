@@ -16,8 +16,8 @@ const admin = new Router()
 const adminProtected = new Router()
   .use(jwt({secret: config.jwtSecret}))
   .use(role('admin'))
+  .get('/admin/auth/regtoken', authAdmin.regToken)
   .get('/admin/users', users.list)
-  .post('/admin/users', users.create)
   .get('/admin/users/:id', users.show)
   .put('/admin/users/:id', users.update);
 
