@@ -1,17 +1,17 @@
 'use strict';
-
-const crypto = require('mz/crypto');
 const jwt = require('koa-jwt');
+const _ = require('lodash');
 
 const env = process.env.NODE_ENV || 'development';
-const {jwtSecret, registrationToken} = require('../../config')[env];
+const {jwtSecret} = require('../config')[env];
 
-const {User} = require('../../models');
+const {User} = require('../models');
+const regToken = require('../lib/reg-token');
 
 /**
- * @api {post} /admin/login Логин админа
- * @apiName AdminLogin
- * @apiGroup AdminAuth
+ * @api {post} /admin/login Авторизация
+ * @apiName AuthLogin
+ * @apiGroup Auth
  * @apiDescription Админов нельзя регистрировать.
  * Можно только логиниться с данными указанными в сорцах
  * (до смены пароля).
@@ -27,17 +27,19 @@ exports.login = function*() {
   let {login, password} = this.request.body;
 
   if (!(login && password)) {
-    this.throw(401);
+    this.throw(400, 'login and password are required');
   }
 
-  let user = yield User.find({
-    login: login
+  let user = yield User.findOne({
+    where: { login: login }
   });
 
-  let authenticated = yield user.authenticate(password);
+  if (!(user && user.authenticate(password))) {
+    this.throw(401, 'Неверные логин или пароль');
+  }
 
-  if (!(user && authenticated)) {
-    this.throw(401);
+  if (user.isBlocked) {
+    this.throw(401, 'Пользователь заблокирован');
   }
 
   let token = jwt.sign(user.toJSON(), jwtSecret);
@@ -47,10 +49,28 @@ exports.login = function*() {
   };
 };
 
+exports.register = function*() {
+  let currentRegToken = yield regToken();
+
+  if (this.request.body.regToken !== currentRegToken) {
+    this.throw(401, 'Invalid registration token');
+  }
+
+  let user = User.build(this.request.body);
+
+  try {
+    yield user.save();
+  } catch(err) {
+    this.throw(400, err.message);
+  }
+
+  this.body = _.pick(user, ['login', 'name']);
+};
+
 /**
  * @api {get} /admin/auth/regtoken Токен регистрации
  * @apiName RegistrationToken
- * @apiGroup AdminAuth
+ * @apiGroup Auth
  * @apiDescription Отдает токен, который используется
  * при регистрации юзеров. Генерит новый токен каждый день
  *
@@ -64,10 +84,9 @@ exports.login = function*() {
  * @apiUse BadRequestError
  */
 exports.regToken = function*() {
-  let currentDay = Math.floor(Date.now() / (1000 * 60 * 60 * 24)).toString();
-  let buffer = yield crypto.pbkdf2(registrationToken, currentDay, 100, 8);
+  let token = yield regToken();
 
   this.body = {
-    token: buffer.toString('hex')
+    token: token
   };
 };

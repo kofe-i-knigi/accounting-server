@@ -1,18 +1,19 @@
-var koa = require('koa');
-var logger = require('koa-logger');
-var compress = require('koa-compress');
-var conditional = require('koa-conditional-get');
-var etag = require('koa-etag');
-var bodyParser = require('koa-bodyparser');
-var favicon = require('koa-favicon');
+'use strict';
 
-var config = require('./config');
-var router = require('./router');
-var models = require('./models');
+const koa = require('koa');
+const logger = require('koa-logger');
+const compress = require('koa-compress');
+const conditional = require('koa-conditional-get');
+const etag = require('koa-etag');
+const bodyParser = require('koa-bodyparser');
+const favicon = require('koa-favicon');
 
-var env = process.env.NODE_ENV || 'development'
+const router = require('./router');
+const errorHandler = require('./middleware/error-handler');
 
-var app = koa();
+const env = process.env.NODE_ENV || 'development'
+
+const app = koa();
 
 app.use(conditional());
 app.use(etag());
@@ -24,6 +25,7 @@ if (env == 'development') {
   app.use(logger());
 }
 
+app.use(errorHandler);
 app.use(router.routes());
 app.use(router.allowedMethods());
 

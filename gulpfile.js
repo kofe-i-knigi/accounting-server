@@ -18,8 +18,8 @@ const gulpSequelize = require('gulp-sequelize')(sequelize, {
 });
 
 const jsPaths = [
-  'api/**/*.js', 'middleware/**/*.js',
-  'bin/www', 'models/**/*.js', 'test/**/*.js'
+  'index.js', 'router.js', 'api/**/*.js', 'middleware/**/*.js',
+  'bin/www', 'models/**/*.js', 'test/**/*.js', 'lib/**/*.js'
 ];
 
 gulp.task('apidoc', (done) => {
@@ -38,7 +38,7 @@ gulp.task('start', () => {
     ext: 'js html',
     cwd: __dirname,
     ignore: [],
-    watch: ['server', 'api'],
+    watch: jsPaths,
     env: {
       'NODE_ENV': 'development'
     },
@@ -61,11 +61,14 @@ gulp.task('test', () => {
     .pipe(mocha({reporter: 'nyan'}));
 });
 
+gulp.task('watch', () => {
+  gulp.watch(['./api/**/*'], ['apidoc']);
+  gulp.watch(jsPaths, ['lint', 'test']);
+});
+
 gulp.task('db:seed', seed);
 
 gulp.task('db:migrate', gulpSequelize.up);
+gulp.task('db:migrate:undo', gulpSequelize.down);
 
-gulp.task('default', ['start', 'apidoc', 'lint', 'test']);
-
-gulp.watch(['./api/**/*'], ['apidoc']);
-gulp.watch(jsPaths, ['lint', 'test']);
+gulp.task('default', ['start', 'apidoc', 'lint', 'test', 'watch']);

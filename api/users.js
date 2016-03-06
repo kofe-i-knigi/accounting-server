@@ -1,4 +1,6 @@
-const {User} = require('../../models');
+'use strict';
+
+const {User} = require('../models');
 
 /**
  * @apiDefine UserResource
@@ -72,7 +74,7 @@ exports.show = function*() {
 
 /**
  * @api {put} /admin/users/:id Обновление пользователя
- * @apiName UsersShow
+ * @apiName UsersUpdate
  * @apiGroup Users
  * @apiDescription Пока, думаю, админу у юзеров
  * нечего обновлять, но метод пускай будет
@@ -86,5 +88,14 @@ exports.show = function*() {
  * @apiUse BadRequestError
  */
 exports.update = function*() {
+  let result = yield User.update(this.request.body, {
+    where: { id: this.params.id },
+    returning: true
+  });
 
+  if(!result[0]) {
+    this.throw(404);
+  }
+
+  this.body = result[1][0];
 };
