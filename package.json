@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "start": "./bin/www"
+    "start": "node --harmony_destructuring ./bin/www"
   },
   "repository": {
     "type": "git",
