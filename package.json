@@ -4,7 +4,8 @@
   "description": "API for KiK accounting app",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "bin/www"
   },
   "repository": {
     "type": "git",
