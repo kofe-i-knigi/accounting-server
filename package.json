@@ -17,6 +17,9 @@
     "url": "https://github.com/kofe-i-knigi/kik-server/issues"
   },
   "homepage": "https://github.com/kofe-i-knigi/kik-server#readme",
+  "engines": {
+    "node": "5.7.1"
+  },
   "dependencies": {
     "co": "^4.6.0",
     "debug": "^2.2.0",
