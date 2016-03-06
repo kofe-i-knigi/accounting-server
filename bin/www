@@ -5,10 +5,12 @@ var debug = require('debug');
 var app = require('../index');
 var models = require("../models");
 
+var port = process.env.PORT;
+
 debug.enable('server');
 
 models.sequelize.sync({force: false}).then(() => {
-  var server = http.createServer(app.callback()).listen(3000, () => {
+  var server = http.createServer(app.callback()).listen(port, () => {
     debug('server')('KIK server listening on port ' + server.address().port);
   });
 });
