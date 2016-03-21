@@ -32,6 +32,6 @@ const adminProtected = new Router()
   .put('/stores/:id', stores.update)
   .delete('/stores/:id', stores.remove);
 
-module.exports = new Router()
+module.exports = new Router({prefix: '/api'})
   .use(everyone.routes())
   .use(adminProtected.routes());

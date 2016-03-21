@@ -7,6 +7,7 @@ const conditional = require('koa-conditional-get');
 const etag = require('koa-etag');
 const bodyParser = require('koa-bodyparser');
 const favicon = require('koa-favicon');
+const cors = require('koa-cors');
 
 const router = require('./router');
 const errorHandler = require('./middleware/error-handler');
@@ -20,6 +21,7 @@ app.use(etag());
 app.use(compress());
 app.use(bodyParser());
 app.use(favicon());
+app.use(cors());
 
 if (env == 'development') {
   app.use(logger());

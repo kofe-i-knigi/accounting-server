@@ -5,7 +5,7 @@ var debug = require('debug');
 var app = require('../index');
 var models = require("../models");
 
-var port = process.env.PORT;
+var port = process.env.PORT || 3000;
 
 debug.enable('server');
 

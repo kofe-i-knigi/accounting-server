@@ -1,6 +1,5 @@
 'use strict';
 const jwt = require('koa-jwt');
-const _ = require('lodash');
 
 const env = process.env.NODE_ENV || 'development';
 const {jwtSecret} = require('../config')[env];
@@ -64,7 +63,11 @@ exports.register = function*() {
     this.throw(400, err.message);
   }
 
-  this.body = _.pick(user, ['login', 'name']);
+  let token = jwt.sign(user.toJSON(), jwtSecret);
+
+  this.body = {
+    token: token
+  };
 };
 
 /**
