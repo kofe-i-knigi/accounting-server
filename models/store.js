@@ -2,15 +2,19 @@ module.exports = (sequelize, DataTypes) => {
   var Store = sequelize.define("Store", {
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     location: {
       type: DataTypes.STRING
     }
   }, {
     classMethods: {
-      associate(models) {
-        return models;
+      associate({Product, Store, StoreProduct}) {
+        Store.belongsToMany(Product, {
+          through: StoreProduct,
+          foreignKey: 'storeId'
+        });
       }
     },
 
