@@ -21,11 +21,14 @@ app.use(etag());
 app.use(compress());
 app.use(bodyParser());
 app.use(favicon());
-app.use(cors());
+app.use(cors({
+  expose: ['Content-Range']
+}));
 
 if (env == 'development') {
   app.use(logger());
 }
+
 
 app.use(errorHandler);
 app.use(router.routes());

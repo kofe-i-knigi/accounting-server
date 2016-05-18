@@ -47,7 +47,6 @@
     "gulp-nodemon": "^2.0.6",
     "gulp-sequelize": "0.0.2",
     "supertest": "^1.2.0",
-    "umzug": "^1.9.0",
-    "webpack-dev-server": "^1.14.1"
+    "umzug": "^1.9.0"
   }
 }

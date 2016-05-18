@@ -41,8 +41,7 @@ gulp.task('start', () => {
     watch: jsPaths,
     env: {
       'NODE_ENV': 'development'
-    },
-    nodeArgs: ['--harmony_destructuring']
+    }
   });
 });
 

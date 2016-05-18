@@ -19,9 +19,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     classMethods: {
-      associate({Product, Store, StoreProduct}) {
+      associate({Product, Store, StoreProduct, MenuItem, MenuItemProduct}) {
         Product.belongsToMany(Store, {
           through: StoreProduct,
+          foreignKey: 'productId'
+        });
+
+        Product.belongsToMany(MenuItem, {
+          through: MenuItemProduct,
           foreignKey: 'productId'
         });
       }
