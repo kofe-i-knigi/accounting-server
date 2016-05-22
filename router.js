@@ -11,6 +11,7 @@ const auth = require('./api/auth');
 const users = require('./api/users');
 const stores = require('./api/stores');
 const products = require('./api/products');
+const menuItems = require('./api/menu-items');
 
 const everyone = new Router()
   .post('/auth/login', auth.login)
@@ -23,7 +24,8 @@ const baristaProtected = new Router()
   .use(jwt({secret: config.jwtSecret}))
   .use(roles(['barista', 'admin']))
 
-  .get('/products', products.list);
+  .get('/products', products.list)
+  .get('/menuitems', menuItems.list);
 
 const adminProtected = new Router()
   .use(jwt({secret: config.jwtSecret}))
@@ -41,7 +43,11 @@ const adminProtected = new Router()
 
   .post('/products', products.create)
   .put('/products/:id', products.update)
-  .delete('/products/:id', products.remove);
+  .delete('/products/:id', products.remove)
+
+  .post('/menuitems', menuItems.create)
+  .put('/menuitems/:id', menuItems.update)
+  .delete('/menuitems/:id', menuItems.remove);
 
 module.exports = new Router({prefix: '/api'})
   .use(everyone.routes())
