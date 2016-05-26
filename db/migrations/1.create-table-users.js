@@ -1,14 +1,15 @@
 const _ = require('lodash');
+const co = require('co');
 const {User} = require('../../models');
 
 module.exports = {
-  up: (migration, Sequelize) => {
+  up: co.wrap(function*(migration, Sequelize) {
     attributes = _.omit(User.attributes, ['password', 'passwordConfirm']);
 
     migration.createTable(User.tableName, attributes);
-  },
+  }),
 
-  down: (migration, Sequelize) => {
+  down: co.wrap(function*(migration, Sequelize) {
     migration.dropTable(User.tableName);
-  }
+  })
 };

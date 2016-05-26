@@ -6,6 +6,7 @@ const apidoc = require('gulp-apidoc');
 const nodemon = require('gulp-nodemon');
 const eslint = require('gulp-eslint');
 const mocha = require('gulp-mocha');
+const env = require('gulp-env');
 
 const {sequelize} = require('./models');
 const seed = require('./db/seed');
@@ -13,7 +14,7 @@ const seed = require('./db/seed');
 const gulpSequelize = require('gulp-sequelize')(sequelize, {
   migrations: {
     path: 'db/migrations',
-    pattern: /^[\d\w-]+\.js$/
+    pattern: /^[\d]+\.[\d\w-]+\.js$/
   }
 });
 
@@ -57,6 +58,11 @@ gulp.task('lint', () => {
 
 gulp.task('test', () => {
   return gulp.src(['test/**/*-test.js'], {read: false})
+    .pipe(env({
+       vars: {
+         'NODE_ENV': 'test'
+      }
+    }))
     .pipe(mocha({reporter: 'nyan'}));
 });
 
@@ -70,4 +76,4 @@ gulp.task('db:seed', seed);
 gulp.task('db:migrate', gulpSequelize.up);
 gulp.task('db:migrate:undo', gulpSequelize.down);
 
-gulp.task('default', ['start', 'apidoc', 'lint', 'test', 'watch']);
+gulp.task('default', ['start', 'apidoc', 'lint', 'watch']);

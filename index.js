@@ -13,7 +13,7 @@ const koaQs = require('koa-qs');
 const router = require('./router');
 const errorHandler = require('./middleware/error-handler');
 
-const env = process.env.NODE_ENV || 'development'
+const env = process.env.NODE_ENV || 'development';
 
 const app = koa();
 

@@ -22,9 +22,10 @@ module.exports = (sequelize, DataTypes) => {
 
         MenuItem.belongsToMany(Product, {
           through: MenuItemProduct,
-          foreignKey: 'menuItemId'
+          foreignKey: 'menuItemId',
+          as: 'products'
         });
-      }
+      }      
     },
 
     instanceMethods: {}
@@ -32,3 +33,13 @@ module.exports = (sequelize, DataTypes) => {
 
   return MenuItem;
 };
+
+
+
+
+
+
+
+
+
+
