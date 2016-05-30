@@ -8,7 +8,7 @@ module.exports = {
   }),
 
   down: co.wrap(function*(migration, Sequelize) {
-    yield migration.dropTable(Product.tableName);
     yield migration.dropTable(StoreProduct.tableName);
+    yield migration.dropTable(Product.tableName);
   })
 };

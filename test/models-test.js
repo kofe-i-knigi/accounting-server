@@ -1,12 +1,13 @@
 const path = require('path');
-// const {should, expect} = require('chai');
+const {expect} = require('chai');
+const co = require('co');
 
 const prepareDb = require('./helper');
 const testData = require('./fixtures/after-load');
 
 delete require.cache[require.resolve('../models')];
 const models = require('../models');
-const {sequelize, MenuItem} = models;
+const {sequelize, MenuItem, Product} = models;
 
 const migrationsPath = path.resolve(__dirname, '../db/migrations');
 const fixtures = [path.resolve(__dirname, './fixtures/before-load.js')];
@@ -22,10 +23,31 @@ describe('models', () => {
   });
 
   describe('MenuItem#createWithProducts', () => {
-    it('should create MenuItemProduct with both ids', () => {
-      return MenuItem.createWithProducts(testData).then((menuItem) => {
-        console.log(menuItem);
+    it('should create MenuItemProduct with both ids', co.wrap(function*() {
+      let menuItem = yield MenuItem.createWithProducts(testData.menuItem);
+
+      menuItem = yield MenuItem.findById(menuItem.id, {
+        include: {
+          model: Product,
+          as: 'products'
+        }
       });
-    });
+
+      expect(menuItem.products.length).to.be.equal(2);
+
+    }));
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -47,7 +47,10 @@ const adminProtected = new Router()
 
   .post('/menuitems', menuItems.create)
   .put('/menuitems/:id', menuItems.update)
-  .delete('/menuitems/:id', menuItems.remove);
+  .delete('/menuitems/:id', menuItems.remove)
+  .post('/menuitems/:id/products', menuItems.addIngridient)
+  .delete('/menuitems/:id/products/:productId', menuItems.removeIngridient)
+  .put('/menuitems/:id/products/:productId', menuItems.updateIngridient);
 
 module.exports = new Router({prefix: '/api'})
   .use(everyone.routes())

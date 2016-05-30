@@ -1,5 +1,3 @@
-const config = require('../../config').admin;
-
 module.exports = [{
   model: 'Product',
   data: {
@@ -13,14 +11,5 @@ module.exports = [{
     id: 2,
     name: 'sugar',
     costPrice: 2
-  }
-}, {
-  model: 'User',
-  data: {
-    login: 'admin',
-    name: 'admin',
-    role: 'admin',
-    password: config.password,
-    passwordConfirm: config.password
   }
 }];

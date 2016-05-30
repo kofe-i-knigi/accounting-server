@@ -1,6 +1,5 @@
 'use strict';
 
-const {omit, clone} = require('lodash');
 const {MenuItem, Product} = require('../models');
 const restify = require('../lib/restify');
 
@@ -22,23 +21,39 @@ resource.show = function*() {
 };
 
 resource.create = function*() {
-  const menuItem = MenuItem.build(omit(
-    clone(this.request.body),
-    'products'));
+  this.body = yield MenuItem.createWithProducts(this.request.body);
+};
 
-  yield menuItem.save();
-  
-  let products = this.request.body.products.map(product => {
-    Product.build(product);
-  });
+resource.addIngridient = function*() {
+  const {id} = this.request.body;
+  const {quantity} = this.request.body.MenuItemProduct;
 
-  products = yield menuItem
-    .addProduct(products[0], {quantity: this.request.body.products[0].quantity});
+  const menuItem = yield MenuItem.findById(this.params.id);
+
+  yield menuItem.addProduct(+id, {quantity});
 
   this.body = menuItem;
-}
+};
+
+resource.removeIngridient = function*() {
+  const menuItem = yield MenuItem.findById(this.params.id);
+
+  yield menuItem.removeProduct(+this.params.productId);
+  this.body = menuItem;
+};
+
+resource.updateIngridient = function*() {
+  const {quantity} = this.request.body.MenuItemProduct;
+
+  const menuItem = yield MenuItem.findById(this.params.id);
+
+  yield menuItem.addProduct(+this.params.productId, {quantity});
+  this.body = menuItem;
+};
 
 module.exports = resource;
+
+
 
 
 
