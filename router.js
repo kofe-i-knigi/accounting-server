@@ -10,6 +10,8 @@ const roles = require('./middleware/roles');
 const auth = require('./api/auth');
 const users = require('./api/users');
 const stores = require('./api/stores');
+const stocks = require('./api/stocks');
+const deliveries = require('./api/deliveries');
 const products = require('./api/products');
 const menuItems = require('./api/menu-items');
 
@@ -40,6 +42,8 @@ const adminProtected = new Router()
   .post('/stores', stores.create)
   .put('/stores/:id', stores.update)
   .delete('/stores/:id', stores.remove)
+  .get('/stocks/:storeId', stocks.list)
+  .post('/stocks/:storeId/deliveries', deliveries.create)
 
   .post('/products', products.create)
   .put('/products/:id', products.update)

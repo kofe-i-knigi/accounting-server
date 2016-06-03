@@ -2,11 +2,17 @@ module.exports = (sequelize, DataTypes) => {
   var StoreProduct = sequelize.define("StoreProduct", {
     storeId: {
       type: DataTypes.INTEGER,
-      notNull: true
+      notNull: true,
+      primaryKey: true
     },
     productId: {
       type: DataTypes.INTEGER,
-      notNull: true
+      notNull: true,
+      primaryKey: true,
+      references: {
+        model: "Product",
+        key: "id"
+      }
     },
     quantity: {
       type: DataTypes.INTEGER,
