@@ -1,5 +1,6 @@
 const {zipObject, map, find} = require('lodash');
 const {Product, StoreProduct} = require('../models');
+const {calcNewPrice} = require('../lib/helpers');
 
 exports.create = function*() {
   const {products} = this.request.body;
@@ -27,17 +28,19 @@ exports.create = function*() {
   });
 
   const delivery = yield stockRecords.map(sr => {
-    let quantity = quantities[sr.productId] || 0;
+    let quantity = +quantities[sr.productId] || 0;
     let {costPrice, newCostPrice} = find(products, {
       id: sr.getDataValue('productId')
     });
 
-    let newPrice = (newCostPrice + (costPrice*quantity)) /
-      (quantity + sr.quantity);
+    const newPrice = calcNewPrice(
+      +costPrice,
+      +newCostPrice / +quantity,
+      +sr.quantity,
+      +quantity
+    );
 
-    newPrice = Math.round(newPrice * 100) / 100;
-
-    sr.setDataValue('quantity',  sr.getDataValue('quantity') + quantity);
+    sr.setDataValue('quantity',  sr.quantity + quantity);
 
     Product.update({
       costPrice: newPrice
@@ -52,13 +55,3 @@ exports.create = function*() {
 
   this.body = {delivery};
 };
-
-
-
-
-
-
-
-
-
-
