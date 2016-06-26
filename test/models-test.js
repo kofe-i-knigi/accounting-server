@@ -7,7 +7,7 @@ const testData = require('./fixtures/after-load');
 
 delete require.cache[require.resolve('../models')];
 const models = require('../models');
-const {sequelize, MenuItem, Product} = models;
+const {sequelize, MenuItem, Product, Receipt} = models;
 
 const migrationsPath = path.resolve(__dirname, '../db/migrations');
 const fixtures = [path.resolve(__dirname, './fixtures/before-load.js')];
@@ -37,17 +37,22 @@ describe('models', () => {
 
     }));
   });
+
+  describe('Receipt#createBatchWithItems', () => {
+    it('creates some receipts with items and user', co.wrap(function*() {
+      let receipts = yield Receipt.createBatchWithItems(
+        testData.receipts,
+        1);
+
+      let receipt = yield Receipt.findById(receipts[1].id, {
+        include: {
+          model: MenuItem,
+          as: 'items'
+        }
+      });
+
+      expect(receipt.items.length).to.be.gt(0);
+      expect(receipt.items[0].ReceiptMenuItem.quantity).to.equal(1);
+    }));
+  });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-

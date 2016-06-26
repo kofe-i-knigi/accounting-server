@@ -56,6 +56,10 @@ module.exports = function(sequelize, DataTypes) {
        * @return     {String} { pass hashed with salt }
        */
       hashPass(pass) {
+        if (!pass && process.env.NODE_ENV === 'test') {
+          return '';
+        }
+
         return crypto.pbkdf2Sync(pass, this.salt, 1000, 256).toString('hex');
       },
 

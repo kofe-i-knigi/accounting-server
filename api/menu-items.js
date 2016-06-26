@@ -17,7 +17,7 @@ resource.show = function*() {
 
   this.body = yield MenuItem.findOne({
     where: { id: this.params.id }
-  });  
+  });
 };
 
 resource.create = function*() {
@@ -52,15 +52,3 @@ resource.updateIngridient = function*() {
 };
 
 module.exports = resource;
-
-
-
-
-
-
-
-
-
-
-
-

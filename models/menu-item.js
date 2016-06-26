@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
        /**
        * attaches passed products to menuItem
        *
-       * @method     authenticate
+       * @method     createWithProducts
        * @param      {Object}  data -menuItem json
        * @param      {Object[]}  data.products - array of attached products
        * @param      {Number}  data.products.quantity - required
