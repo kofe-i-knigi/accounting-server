@@ -14,18 +14,34 @@ module.exports = {
   },
 
   receipts: [{
-    createdAt: new Date([5, 10, 2016]).toString(),
+    date: new Date([5, 10, 2016]),
     type: 'cash',
     items: [{
       id: 1,
-      quantity: 2
+      quantity: 2,
+      products: [{
+        id: 1,
+        MenuItemProduct: {
+          menuItemId: 1,
+          productId: 1,
+          quantity: 10
+        }
+      }]
     }]
   }, {
-    createdAt: new Date([5, 11, 2016]).toString(),
+    date: new Date([5, 11, 2016]),
     type: 'card',
     items: [{
       id: 1,
-      quantity: 1
+      quantity: 1,
+      products: [{
+        id: 1,
+        MenuItemProduct: {
+          menuItemId: 1,
+          productId: 1,
+          quantity: 10
+        }
+      }]
     }]
   }]
 };

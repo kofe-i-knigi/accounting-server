@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     quantity: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       defaultValue: 0
     }
   }, {

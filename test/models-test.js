@@ -7,7 +7,7 @@ const testData = require('./fixtures/after-load');
 
 delete require.cache[require.resolve('../models')];
 const models = require('../models');
-const {sequelize, MenuItem, Product, Receipt} = models;
+const {sequelize, MenuItem, Product, Receipt, StoreProduct} = models;
 
 const migrationsPath = path.resolve(__dirname, '../db/migrations');
 const fixtures = [path.resolve(__dirname, './fixtures/before-load.js')];
@@ -53,6 +53,21 @@ describe('models', () => {
 
       expect(receipt.items.length).to.be.gt(0);
       expect(receipt.items[0].ReceiptMenuItem.quantity).to.equal(1);
+
+      yield new Promise(resolve => {
+        setTimeout(resolve, 200);
+      });
+
+      let storeProduct = yield StoreProduct.find({
+        where: {
+          storeId: 1,
+          productId: 1
+        }
+      });
+
+      expect(storeProduct.quantity).to.equal(70);
+
+      // expect(new Date(receipt.date)).to.equal(new Date([5, 10, 2016]));
     }));
   });
 });

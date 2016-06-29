@@ -14,6 +14,8 @@ const stocks = require('./api/stocks');
 const deliveries = require('./api/deliveries');
 const products = require('./api/products');
 const menuItems = require('./api/menu-items');
+const settings = require('./api/settings');
+const shift = require('./api/shift');
 
 const everyone = new Router()
   .post('/auth/login', auth.login)
@@ -26,8 +28,10 @@ const baristaProtected = new Router()
   .use(jwt({secret: config.jwtSecret}))
   .use(roles(['barista', 'admin']))
 
+  .get('/settings', settings.get)
   .get('/products', products.list)
-  .get('/menuitems', menuItems.list);
+  .get('/menuitems', menuItems.list)
+  .post('/shift', shift.close);
 
 const adminProtected = new Router()
   .use(jwt({secret: config.jwtSecret}))

@@ -63,11 +63,14 @@ gulp.task('test', () => {
          'NODE_ENV': 'test'
       }
     }))
-    .pipe(mocha({reporter: 'nyan'}));
+    .pipe(mocha({
+      timeout: 5000,
+      reporter: 'nyan'
+    }));
 });
 
 gulp.task('watch', () => {
-  gulp.watch(['./api/**/*'], ['apidoc']);
+  // gulp.watch(['./api/**/*'], ['apidoc']);
   gulp.watch(jsPaths, ['lint', 'test']);
 });
 
@@ -76,4 +79,4 @@ gulp.task('db:seed', seed);
 gulp.task('db:migrate', gulpSequelize.up);
 gulp.task('db:migrate:undo', gulpSequelize.down);
 
-gulp.task('default', ['start', 'apidoc', 'lint', 'watch']);
+gulp.task('default', ['start', 'lint', 'watch']);

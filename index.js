@@ -31,7 +31,6 @@ if (env == 'development') {
   app.use(logger());
 }
 
-
 app.use(errorHandler);
 app.use(router.routes());
 app.use(router.allowedMethods());
