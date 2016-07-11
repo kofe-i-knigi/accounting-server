@@ -19,7 +19,7 @@ module.exports = {
 
   admin: {
     password: 'lady8ug',
-    basePayment: 1000,
-    bonusPercent: 5
+    basePayment: 800,
+    bonusPercent: 10
   }
 };
