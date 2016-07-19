@@ -16,6 +16,7 @@ const products = require('./api/products');
 const menuItems = require('./api/menu-items');
 const settings = require('./api/settings');
 const shift = require('./api/shift');
+const menu = require('./api/menu');
 
 const everyone = new Router()
   .post('/auth/login', auth.login)
@@ -30,7 +31,7 @@ const baristaProtected = new Router()
 
   .get('/settings', settings.get)
   .get('/products', products.list)
-  .get('/menuitems', menuItems.list)
+  .get('/menu', menu.getAllItems)
   .post('/shift', shift.close);
 
 const adminProtected = new Router()
@@ -54,6 +55,7 @@ const adminProtected = new Router()
   .put('/products/:id', products.update)
   .delete('/products/:id', products.remove)
 
+  .get('/menuitems', menuItems.list)
   .post('/menuitems', menuItems.create)
   .put('/menuitems/:id', menuItems.update)
   .delete('/menuitems/:id', menuItems.remove)
