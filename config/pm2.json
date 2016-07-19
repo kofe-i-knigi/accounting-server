@@ -3,7 +3,10 @@
     "name": "kik-server",
     "script": "bin/www",
     "env": {
-      "NODE_ENV": "production"
+      "NODE_ENV": "production",
+      "DATABASE_URL": "postgres://postgres:password@localhost:5432/kik",
+      "JWT": "sdfsd0fj3mvqvmq29835yq3znrupa93rspv95sesp45naa3n4",
+      "REG_TOKEN": "asd0345jmsdfmp03j45fp3qufnsdparmap3854adsp89"
     },
     "error_file": "log/err.log",
     "out_file": "log/out.log"
