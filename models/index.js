@@ -1,10 +1,13 @@
-var fs        = require("fs");
-var path      = require("path");
+var fs = require("fs");
+var path = require("path");
 var Sequelize = require("sequelize");
-var env       = process.env.NODE_ENV || "development";
-var config    = require('../config')[env];
+var env = process.env.NODE_ENV || "development";
+var config = require('../config')[env];
 var sequelize = new Sequelize(config.dbUri, { dialect: 'postgres', logging: false});
-var db        = {};
+var db = {};
+var pg = require('pg');
+
+pg.defaults.parseFloat = true;
 
 fs
   .readdirSync(__dirname)
