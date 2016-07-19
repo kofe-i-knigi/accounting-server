@@ -40,6 +40,7 @@
     "mz": "^2.3.1",
     "pg": "^4.5.1",
     "pg-hstore": "^2.3.2",
+    "pg-parse-float": "0.0.1",
     "sequelize": "^3.19.3"
   },
   "devDependencies": {

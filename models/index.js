@@ -7,7 +7,7 @@ var sequelize = new Sequelize(config.dbUri, { dialect: 'postgres', logging: fals
 var db = {};
 var pg = require('pg');
 
-pg.defaults.parseFloat = true;
+require('pg-parse-float')(pg);
 
 fs
   .readdirSync(__dirname)
