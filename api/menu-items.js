@@ -1,12 +1,15 @@
 'use strict';
 
-const {MenuItem, Product} = require('../models');
+const {MenuItem, Product, Category} = require('../models');
 const restify = require('../lib/restify');
 
 const resource = restify(MenuItem, {
   include: [{
     model: Product,
     as: 'products'
+  }, {
+    model: Category,
+    as: 'category'
   }]
 });
 
@@ -23,6 +26,28 @@ resource.show = function*() {
 resource.create = function*() {
   this.body = yield MenuItem.createWithProducts(this.request.body);
 };
+
+resource.update = function* update() {
+  if(!this.params.id) {
+    this.throw('id is required', 400);
+  }
+
+  if (this.request.body.category) {
+    this.request.body.categoryId = this.request.body.category.id;
+  }
+
+  let result = yield MenuItem.update(this.request.body, {
+    where: { id: this.params.id },
+    returning: true
+  });
+
+  if(!result[0]) {
+    this.throw(404);
+  }
+
+  this.body = result[1][0];
+}
+
 
 resource.addIngridient = function*() {
   const {id} = this.request.body;

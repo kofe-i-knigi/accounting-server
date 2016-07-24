@@ -24,7 +24,7 @@ exports.updateProduct = function*() {
     this.throw(400, 'storeId && productId && quantity are required');
   }
 
-  result = yield StoreProduct.update({
+  const result = yield StoreProduct.update({
     quantity
   }, {
     where: {storeId, productId}

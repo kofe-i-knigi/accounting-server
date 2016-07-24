@@ -14,6 +14,7 @@ const stocks = require('./api/stocks');
 const deliveries = require('./api/deliveries');
 const products = require('./api/products');
 const menuItems = require('./api/menu-items');
+const categories = require('./api/categories');
 const settings = require('./api/settings');
 const shift = require('./api/shift');
 const menu = require('./api/menu');
@@ -31,7 +32,8 @@ const baristaProtected = new Router()
 
   .get('/settings', settings.get)
   .get('/products', products.list)
-  .get('/menu', menu.getAllItems)
+  .get('/menu', menu.getCategories)
+  .get('/menu/:categoryId', menu.getItems)
   .post('/shift', shift.close);
 
 const adminProtected = new Router()
@@ -61,7 +63,12 @@ const adminProtected = new Router()
   .delete('/menuitems/:id', menuItems.remove)
   .post('/menuitems/:id/products', menuItems.addIngridient)
   .delete('/menuitems/:id/products/:productId', menuItems.removeIngridient)
-  .put('/menuitems/:id/products/:productId', menuItems.updateIngridient);
+  .put('/menuitems/:id/products/:productId', menuItems.updateIngridient)
+
+  .get('/categories', categories.list)
+  .post('/categories', categories.create)
+  .delete('/categories/:id', categories.remove)
+  .put('/categories/:id', categories.update);
 
 module.exports = new Router({prefix: '/api'})
   .use(everyone.routes())

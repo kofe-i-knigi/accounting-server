@@ -38,7 +38,8 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate({MenuItem, Category, Product, MenuItemProduct}) {
         MenuItem.belongsTo(Category, {
-          foreignKey: 'categoryId'
+          foreignKey: 'categoryId',
+          as: 'category'
         });
 
         MenuItem.belongsToMany(Product, {
@@ -52,15 +53,22 @@ module.exports = (sequelize, DataTypes) => {
        * attaches passed products to menuItem
        *
        * @method     createWithProducts
-       * @param      {Object}  data -menuItem json
-       * @param      {Object[]}  data.products - array of attached products
-       * @param      {Number}  data.products.quantity - required
+       * @param      {Object} data -menuItem json
+       * @param      {Object[]} data.products - array of attached products
+       * @param      {Object} data.category - added category
+       * @param      {Number} data.products.quantity - required
        * @return     {Object} menuItem
        */
       createWithProducts: co.wrap(function*(data) {
         const menuItem = this.build(data);
 
+        if (data.category) {
+          menuItem.categoryId = data.category.id;
+        }
+
         yield menuItem.save();
+
+        yield
 
         yield data.products.map(product => {
           return menuItem.addProduct(product.id, {quantity: product.quantity});
