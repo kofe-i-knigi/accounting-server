@@ -14,6 +14,10 @@ exports.getCategories = function* () {
 };
 
 exports.getItems = function* () {
+  if (!+this.params.categoryId) {
+    this.throw(400, 'provide categoryId');
+  }
+
   this.body = yield MenuItem.findAll({
     where: {
       categoryId: this.params.categoryId
