@@ -1,3 +1,4 @@
+const {DEFAULT_ORDER} = require('../config/constants');
 const {MenuItem, Product, Category} = require('../models');
 
 exports.getAllItems = function* () {
@@ -22,6 +23,7 @@ exports.getItems = function* () {
     where: {
       categoryId: this.params.categoryId
     },
+    order: DEFAULT_ORDER,
     include: [{
       model: Product,
       as: 'products'

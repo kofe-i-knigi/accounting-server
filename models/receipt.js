@@ -11,6 +11,16 @@ module.exports = (sequelize, DataTypes) => {
 
     date: {
       type: DataTypes.DATE
+    },
+
+    selfPaid: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+
+    discount: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     }
   }, {
     classMethods: {
