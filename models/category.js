@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     },
+    hasDiscount: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     color: {
       type: DataTypes.STRING
     }

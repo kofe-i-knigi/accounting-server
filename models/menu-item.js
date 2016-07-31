@@ -68,8 +68,6 @@ module.exports = (sequelize, DataTypes) => {
 
         yield menuItem.save();
 
-        yield
-
         yield data.products.map(product => {
           return menuItem.addProduct(product.id, {quantity: product.quantity});
         });
