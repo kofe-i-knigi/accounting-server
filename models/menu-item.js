@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     isComposite: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
+    },
+    hasDiscount: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {
 
@@ -60,9 +64,12 @@ module.exports = (sequelize, DataTypes) => {
        * @return     {Object} menuItem
        */
       createWithProducts: co.wrap(function*(data) {
+        const {Category} = require('./index');
         const menuItem = this.build(data);
 
         if (data.category) {
+          const category = yield Category.find({where: {id: data.category.id}});
+          menuItem.hasDiscount = category.hasDiscount;
           menuItem.categoryId = data.category.id;
         }
 

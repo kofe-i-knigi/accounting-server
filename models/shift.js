@@ -10,6 +10,11 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0.00
     },
 
+    fullSalary: {
+      type: DataTypes.DECIMAL(10,2),
+      defaultValue: 0.00
+    },
+
     isClosed: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
