@@ -11,7 +11,9 @@ exports.getAllItems = function* () {
 };
 
 exports.getCategories = function* () {
-  this.body = yield Category.findAll();
+  this.body = yield Category.findAll({
+    order: DEFAULT_ORDER
+  });
 };
 
 exports.getItems = function* () {
