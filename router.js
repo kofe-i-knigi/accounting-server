@@ -68,7 +68,9 @@ const adminProtected = new Router()
   .get('/categories', categories.list)
   .post('/categories', categories.create)
   .delete('/categories/:id', categories.remove)
-  .put('/categories/:id', categories.update);
+  .put('/categories/:id', categories.update)
+
+  .get('/shifts', shift.list);
 
 module.exports = new Router({prefix: '/api'})
   .use(everyone.routes())

@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     discount: {
       type: DataTypes.INTEGER,
       defaultValue: 0
+    },
+
+    total: {
+      type: DataTypes.DECIMAL(10,2),
+      defaultValue: 0.00
     }
   }, {
     classMethods: {
@@ -38,7 +43,8 @@ module.exports = (sequelize, DataTypes) => {
         });
 
         Receipt.belongsTo(User, {
-          foreignKey: 'userId'
+          foreignKey: 'userId',
+          as: 'user'
         });
       },
 
@@ -52,11 +58,11 @@ module.exports = (sequelize, DataTypes) => {
        * @param      {number}  userId - id of responsible user
        * @return     {Object[]} receipts
        */
-      createBatchWithItems: co.wrap(function*(data, userId) {
+      createBatchWithItems: co.wrap(function*(data, userId, shiftId) {
         const {sequelize, StoreProduct, Store} = require('./index');
 
         const receipts = yield this.bulkCreate(data.map(receipt => {
-          extend(receipt, {userId});
+          return extend({userId, shiftId}, receipt);
         }), {
           returning: true
         });
