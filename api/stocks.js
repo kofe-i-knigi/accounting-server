@@ -46,7 +46,14 @@ exports.list = function*() {
     }
   });
 
-  const count = yield StoreProduct.count({where: _.extend({storeId}, filter)});
+  const count = yield Product.count({
+    where: filter,
+    include: {
+      model: StoreProduct,
+      as: 'stock',
+      where: {storeId}
+    }
+  });
 
   this.set('Content-Range', `*/${count}`);
 };
