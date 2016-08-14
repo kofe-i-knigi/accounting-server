@@ -1,19 +1,54 @@
+const {DEFAULT_TABLE_PAGE_SIZE, DEFAULT_ORDER} = require('../config/constants');
 const {Product, StoreProduct} = require('../models');
+const _ = require('lodash');
 
 exports.list = function*() {
   const {storeId} = this.params;
+  const limit = this.query.count || DEFAULT_TABLE_PAGE_SIZE;
+  const page = this.query.page || 1;
+  const filter = this.query.filter || {};
 
   if (!storeId) {
     throw Error();
   }
 
+  var order = DEFAULT_ORDER;
+  if (this.query.sorting && typeof this.query.sorting == 'object') {
+    order = _.zip(
+      _.keys(this.query.sorting),
+      _.values(this.query.sorting));
+  }
+
+  Object.keys(filter).forEach(key => {
+    if (filter[key] === 'true' || filter[key] === 'false') {
+      filter[key] = filter[key] === 'true' ? true : false;
+    } else if (key === 'exclude') {
+      filter.id = {
+        $notIn: filter[key].split(',').map(id => +id)
+      };
+      delete filter[key];
+    } else {
+      filter[key] = {
+        $iLike: `%${decodeURI(filter[key])}%`
+      };
+    }
+  });
+
   this.body = yield Product.findAll({
+    where: filter,
+    order,
+    offset: limit * (page - 1),
+    limit: limit,
     include: {
       model: StoreProduct,
       as: 'stock',
       where: {storeId}
     }
   });
+
+  const count = yield StoreProduct.count({where: {storeId}});
+
+  this.set('Content-Range', `*/${count}`);
 };
 
 exports.updateProduct = function*() {
