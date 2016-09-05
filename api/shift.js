@@ -31,7 +31,7 @@ const resource = restify(Shift, {
 });
 
 resource.close = function*() {
-  const {receipts} = this.request.body;
+  const {receipts, cash, cashless} = this.request.body;
   const userId = this.state.user.id;
   const total = _.sumBy(receipts, 'total');
 
@@ -43,6 +43,8 @@ resource.close = function*() {
     salary,
     fullSalary,
     total,
+    cash,
+    cashless,
     isClosed: true,
     closedAt: new Date()});
 

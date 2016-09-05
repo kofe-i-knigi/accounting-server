@@ -5,6 +5,16 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0.00
     },
 
+    cash: {
+      type: DataTypes.DECIMAL(10,2),
+      defaultValue: 0.00
+    },
+
+    cashless: {
+      type: DataTypes.DECIMAL(10,2),
+      defaultValue: 0.00
+    },
+
     salary: {
       type: DataTypes.DECIMAL(10,2),
       defaultValue: 0.00
@@ -24,6 +34,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE
     }
   }, {
+    getterMethods: {
+      difference() {
+        return this.cash + this.cashless - this.total;
+      }
+    },
+
     classMethods: {
       associate({Shift, Receipt, User}) {
         Shift.belongsTo(User, {
