@@ -33,7 +33,9 @@ const resource = restify(Shift, {
 resource.close = function*() {
   const {receipts, cash, cashless} = this.request.body;
   const userId = this.state.user.id;
-  const total = _.sumBy(receipts, 'total');
+  const total = _(receipts)
+    .filter(receipt => !receipt.selfPaid)
+    .sumBy('total');
 
   const salary = calcSalary(receipts);
   const fullSalary = calcSalary(receipts, true);

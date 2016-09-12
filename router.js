@@ -69,6 +69,7 @@ const adminProtected = new Router()
   .post('/categories', categories.create)
   .delete('/categories/:id', categories.remove)
   .put('/categories/:id', categories.update)
+  .put('/categories/:id/discount', categories.toggleDiscount)
 
   .get('/shifts', shift.list);
 
