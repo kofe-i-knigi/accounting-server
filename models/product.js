@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
     unit: {
       type: DataTypes.STRING,
       defaultValue: 'шт'
+    },
+    standardQuantity: {
+      type: DataTypes.INTEGER
     }
   }, {
     getterMethods: {
@@ -25,6 +28,14 @@ module.exports = (sequelize, DataTypes) => {
         }
 
         return this.costPrice * (this.stock[0].quantity || 0);
+      },
+
+      shortage() {
+        if (!this.standardQuantity || !this.stock || !this.stock[0]) {
+          return 0;
+        }
+
+        return -Math.min(0, this.stock[0].quantity - this.standardQuantity);
       }
     },
     classMethods: {

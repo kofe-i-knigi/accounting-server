@@ -50,6 +50,7 @@ const adminProtected = new Router()
   .put('/stores/:id', stores.update)
   .delete('/stores/:id', stores.remove)
   .get('/stocks/:storeId', stocks.list)
+  .get('/stocks/:storeId/shortage', stocks.shortage)
   .put('/stocks/:storeId/products/:productId', stocks.updateProduct)
   .post('/stocks/:storeId/deliveries', deliveries.create)
 

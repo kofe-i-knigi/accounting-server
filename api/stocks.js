@@ -78,3 +78,25 @@ exports.updateProduct = function*() {
     this.throw(404);
   }
 };
+
+exports.shortage = function*() {
+  const {storeId} = this.params;
+
+  if (!storeId) {
+    this.throw(400, 'provide storeId');
+  }
+
+  const trackedProducts = yield Product.findAll({
+    where: {
+      standardQuantity: {$gt: 0}
+    },
+
+    include: {
+      model: StoreProduct,
+      as: 'stock',
+      where: {storeId}
+    }
+  });
+
+  this.body = trackedProducts;
+};
