@@ -48,7 +48,8 @@ module.exports = (sequelize, DataTypes) => {
         });
 
         Shift.hasMany(Receipt, {
-          foreignKey: 'shiftId'
+          foreignKey: 'shiftId',
+          as: 'receipts'
         });
       }
     },

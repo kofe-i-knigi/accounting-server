@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const {Receipt, Shift, User} = require('../models');
+const {Receipt, Shift, User, MenuItem} = require('../models');
 const restify = require('../lib/restify');
 const {basePayment, bonusPercent} = require('../config/index.js').admin;
 
@@ -27,7 +27,16 @@ const resource = restify(Shift, {
   include: [{
     model: User,
     as: 'user'
-  }]
+  }, {
+    model: Receipt,
+    as: 'receipts',
+    include: [{
+      model: MenuItem,
+      as: 'items'
+    }]
+  }],
+
+  order: [['createdAt', 'DESC']]
 });
 
 resource.close = function*() {

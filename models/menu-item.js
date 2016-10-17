@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
         return this.products.reduce((sum, p) => {
           return sum + p.costPrice * p.MenuItemProduct.quantity;
         }, 0);
+      },
+
+      quantity() {
+        return this.ReceiptMenuItem ? this.ReceiptMenuItem.quantity : 0;
       }
     },
 

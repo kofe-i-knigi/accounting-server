@@ -72,7 +72,8 @@ const adminProtected = new Router()
   .put('/categories/:id', categories.update)
   .put('/categories/:id/discount', categories.toggleDiscount)
 
-  .get('/shifts', shift.list);
+  .get('/shifts', shift.list)
+  .get('/shifts/:id', shift.show);
 
 module.exports = new Router({prefix: '/api'})
   .use(everyone.routes())
