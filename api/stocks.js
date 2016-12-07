@@ -79,6 +79,24 @@ exports.updateProduct = function*() {
   }
 };
 
+exports.audit = function* () {
+  const {items} = this.request.body;
+  const {storeId} = this.params;
+
+  yield items.map(({id, quantity}) => {
+    return StoreProduct.update({
+      quantity
+    }, {
+      where: {
+        storeId,
+        productId: id
+      }
+    });
+  });
+
+  this.body = {status: 1};
+};
+
 exports.shortage = function*() {
   const {storeId} = this.params;
 
