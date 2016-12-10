@@ -1,5 +1,5 @@
 const {DEFAULT_TABLE_PAGE_SIZE, DEFAULT_ORDER} = require('../config/constants');
-const {Product, StoreProduct} = require('../models');
+const {Product, StoreProduct, Audit} = require('../models');
 const _ = require('lodash');
 
 exports.list = function*() {
@@ -93,6 +93,8 @@ exports.audit = function* () {
       }
     });
   });
+
+  yield Audit.create({storeId, items});
 
   this.body = {status: 1};
 };

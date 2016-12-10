@@ -11,6 +11,7 @@ const auth = require('./api/auth');
 const users = require('./api/users');
 const stores = require('./api/stores');
 const stocks = require('./api/stocks');
+const audits = require('./api/audits');
 const deliveries = require('./api/deliveries');
 const products = require('./api/products');
 const menuItems = require('./api/menu-items');
@@ -54,6 +55,9 @@ const adminProtected = new Router()
   .put('/stocks/:storeId/audit', stocks.audit)
   .put('/stocks/:storeId/products/:productId', stocks.updateProduct)
   .post('/stocks/:storeId/deliveries', deliveries.create)
+
+  .get('/audits', audits.list)
+  .get('/audits/:id', audits.show)
 
   .post('/products', products.create)
   .put('/products/:id', products.update)
