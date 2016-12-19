@@ -59,6 +59,9 @@ const adminProtected = new Router()
   .get('/audits', audits.list)
   .get('/audits/:id', audits.show)
 
+  .get('/deliveries', deliveries.list)
+  .get('/deliveries/:id', deliveries.show)
+
   .post('/products', products.create)
   .put('/products/:id', products.update)
   .delete('/products/:id', products.remove)

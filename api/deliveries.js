@@ -1,8 +1,14 @@
 const {zipObject, map, find} = require('lodash');
-const {Product, StoreProduct} = require('../models');
+const {Product, StoreProduct, Delivery} = require('../models');
 const {calcNewPrice} = require('../lib/helpers');
 
-exports.create = function*() {
+const restify = require('../lib/restify');
+
+module.exports = restify(Delivery, {
+  order: [['createdAt', 'DESC']]
+});
+
+module.exports.create = function*() {
   const {products} = this.request.body;
   const {storeId} = this.params;
 
@@ -27,9 +33,10 @@ exports.create = function*() {
     }).spread(sr => Promise.resolve(sr));
   });
 
-  const delivery = yield stockRecords.map(sr => {
-    let quantity = +quantities[sr.productId] || 0;
-    let {costPrice, newCostPrice} = find(products, {
+  const items = yield stockRecords.map(sr => {
+    const oldQuantity = sr.quantity;
+    const quantity = +quantities[sr.productId] || 0;
+    const {costPrice, newCostPrice} = find(products, {
       id: sr.getDataValue('productId')
     });
 
@@ -42,16 +49,32 @@ exports.create = function*() {
 
     sr.setDataValue('quantity',  sr.quantity + quantity);
 
-    Product.update({
-      costPrice: newPrice
-    }, {
-      where: {
-        id: sr.productId
-      }
-    });
+    return sr.save().then(() => {
+      return Product.update({
+        costPrice: newPrice
+      }, {
+        where: {
+          id: sr.productId
+        },
+        returning: true
+      });
+    })
+    .then((result) => {
+      const [,[product]] = result;
 
-    return sr.save();
+      return {
+        name: product.getDataValue('name'),
+        unit: product.getDataValue('unit'),
+        quantity,
+        oldQuantity,
+        newQuantity: sr.quantity,
+        oldPrice: +costPrice,
+        newPrice
+      };
+    });
   });
+  console.log(storeId, items);
+  const delivery = yield Delivery.create({storeId, items});
 
   this.body = {delivery};
 };
