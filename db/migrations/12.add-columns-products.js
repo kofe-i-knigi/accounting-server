@@ -4,7 +4,8 @@ const {Product} = require('../../models');
 module.exports = {
   up: co.wrap(function*(migration, Sequelize) {
     yield migration.addColumn(Product.tableName, 'standardQuantity', {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
+      defaultValue: false
     });
   }),
 

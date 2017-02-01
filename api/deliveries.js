@@ -73,8 +73,59 @@ module.exports.create = function*() {
       };
     });
   });
-  console.log(storeId, items);
+
   const delivery = yield Delivery.create({storeId, items});
+
+  this.body = {delivery};
+};
+
+module.exports.writeOff = function*() {
+  const {products} = this.request.body;
+  const {storeId} = this.params;
+
+  if (!storeId || !products || products.length < 0) {
+    throw new Error('require storeId and products to write off');
+  }
+
+  const quantities = zipObject(
+    map(products, 'id'),
+    map(products, 'quantity'));
+
+  const stockRecords = yield products.map(product => {
+    return StoreProduct.findOrCreate({
+      where: {
+        storeId,
+        productId: product.id
+      },
+      defaults: {
+        storeId,
+        productId: product.id
+      }
+    }).spread(sr => Promise.resolve(sr));
+  });
+
+  const items = yield stockRecords.map(sr => {
+    const oldQuantity = sr.quantity;
+    const quantity = +quantities[sr.productId] || 0;
+
+    sr.setDataValue('quantity',  sr.quantity - quantity);
+
+    return sr.save()
+    .then(() => {
+        return Product.findById(sr.productId);
+    })
+    .then((product) => {
+      return {
+        name: product.getDataValue('name'),
+        unit: product.getDataValue('unit'),
+        quantity,
+        oldQuantity,
+        newQuantity: sr.quantity
+      };
+    });
+  });
+
+  const delivery = yield Delivery.create({storeId, items, isWriteoff: true});
 
   this.body = {delivery};
 };

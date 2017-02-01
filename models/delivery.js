@@ -2,6 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const Delivery = sequelize.define("Delivery", {
     items: {
       type: DataTypes.JSON
+    },
+    isWriteoff: {
+      type: DataTypes.INTEGER,
+      defaultValue: false
     }
   }, {
     classMethods: {
